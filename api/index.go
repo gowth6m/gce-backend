@@ -10,6 +10,12 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 
 	router := gin.Default()
 
+	router.GET("/", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"message": "Welcome to the GreatComCatEngineering API",
+		})
+	})
+
 	router.GET("/user/:id", func(c *gin.Context) {
 		user.HandleGetUserByEmail(c.Writer, c.Request)
 	})
