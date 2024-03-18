@@ -1,21 +1,23 @@
 package handler
 
 import (
-	"greatcomcatengineering.com/backend/utils"
+	"github.com/gin-gonic/gin"
+	"greatcomcatengineering.com/backend/services/user"
 	"net/http"
 )
 
 func Handler(w http.ResponseWriter, r *http.Request) {
 
-}
+	router := gin.Default()
 
-func BaseApiHandler(w http.ResponseWriter, r *http.Request) {
-	switch r.Method {
+	router.GET("/user/:id", func(c *gin.Context) {
+		user.HandleGetUserByEmail(c.Writer, c.Request)
+	})
 
-	case "GET":
-		utils.RespondWithJSON(w, http.StatusOK, "Great Comcat Engineering API", "Welcome to the Great Comcat Engineering API")
+	router.POST("/user/create", func(c *gin.Context) {
+		user.HandleCreateUser(c.Writer, c.Request)
+	})
 
-	default:
-		utils.RespondWithError(w, http.StatusMethodNotAllowed, "Unsupported HTTP method")
-	}
+	// Use Gin to handle the request
+	router.ServeHTTP(w, r)
 }
