@@ -11,7 +11,7 @@ func RespondWithJSON[T any](w http.ResponseWriter, status int, message string, c
 	response := models.ApiResponse[T]{
 		Status:  status,
 		Message: message,
-		Content: content,
+		Data: content,
 	}
 
 	w.Header().Set("Content-Type", "application/json")

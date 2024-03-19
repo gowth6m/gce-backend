@@ -9,7 +9,6 @@ import (
 )
 
 func main() {
-
 	err := configs.LoadConfig()
 	if err != nil {
 		log.Fatal("Error loading config: ", err)
@@ -17,8 +16,11 @@ func main() {
 
 	database.ConnectToMongoDB()
 	router := gin.Default()
-	routes.DefaultRoutes(router)
-	routes.UserRoutes(router)
-	router.Run(":8080")
+	v0 := router.Group("/v0")
+	{
+		routes.DefaultRoutes(v0)
+		routes.UserRoutes(v0)
+	}
+	router.Run("localhost:8080")
 	database.DisconnectFromMongoDB()
 }

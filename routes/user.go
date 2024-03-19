@@ -5,8 +5,8 @@ import (
 	"greatcomcatengineering.com/backend/services/user"
 )
 
-func UserRoutes(router *gin.Engine) {
-	userGroup := router.Group("/user")
+func UserRoutes(group *gin.RouterGroup) {
+	userGroup := group.Group("/user")
 	{
 		userGroup.POST("/create", func(c *gin.Context) {
 			user.HandleCreateUser(c.Writer, c.Request)
