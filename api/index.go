@@ -2,28 +2,22 @@ package handler
 
 import (
 	"github.com/gin-gonic/gin"
-	"greatcomcatengineering.com/backend/services/user"
+	"greatcomcatengineering.com/backend/configs"
+	"greatcomcatengineering.com/backend/database"
+	"greatcomcatengineering.com/backend/routes"
+	"log"
 	"net/http"
 )
 
 func Handler(w http.ResponseWriter, r *http.Request) {
+	err := configs.LoadConfig()
+	if err != nil {
+		log.Fatal("Error loading config: ", err)
+	}
 
+	database.ConnectToMongoDB()
 	router := gin.Default()
-
-	router.GET("/", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "Welcome to the GreatComCatEngineering API",
-		})
-	})
-
-	router.GET("/user/:id", func(c *gin.Context) {
-		user.HandleGetUserByEmail(c.Writer, c.Request)
-	})
-
-	router.POST("/user/create", func(c *gin.Context) {
-		user.HandleCreateUser(c.Writer, c.Request)
-	})
-
-	// Use Gin to handle the request
+	routes.DefaultRoutes(router)
+	routes.UserRoutes(router)
 	router.ServeHTTP(w, r)
 }

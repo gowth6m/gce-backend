@@ -2,21 +2,23 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
-	"greatcomcatengineering.com/backend/services/user"
+	"greatcomcatengineering.com/backend/configs"
+	"greatcomcatengineering.com/backend/database"
+	"greatcomcatengineering.com/backend/routes"
+	"log"
 )
 
 func main() {
-	godotenv.Load()
+
+	err := configs.LoadConfig()
+	if err != nil {
+		log.Fatal("Error loading config: ", err)
+	}
+
+	database.ConnectToMongoDB()
 	router := gin.Default()
-
-	router.POST("/user/create", func(c *gin.Context) {
-		user.HandleCreateUser(c.Writer, c.Request)
-	})
-
-	router.GET("/user/:id", func(c *gin.Context) {
-		user.HandleGetUserByEmail(c.Writer, c.Request)
-	})
-
+	routes.DefaultRoutes(router)
+	routes.UserRoutes(router)
 	router.Run(":8080")
+	database.DisconnectFromMongoDB()
 }

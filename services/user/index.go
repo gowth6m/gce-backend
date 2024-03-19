@@ -25,7 +25,7 @@ func HandleCreateUser(w http.ResponseWriter, r *http.Request) {
 	newUser.ID = uuid.New().String()
 
 	// Attempt to add the new user to the database
-	if err := db.AddUser(ctx, newUser); err != nil {
+	if err := database.AddUser(ctx, newUser); err != nil {
 		utils.RespondWithError(w, http.StatusInternalServerError, "Failed to create user: "+err.Error())
 		return
 	}
@@ -51,7 +51,7 @@ func HandleGetUserByEmail(w http.ResponseWriter, r *http.Request) {
 	ctx := context.TODO()
 
 	// Attempt to retrieve the user from the database
-	user, err := db.GetUserByEmail(ctx, id)
+	user, err := database.GetUserByEmail(ctx, id)
 	if err != nil {
 		utils.RespondWithError(w, http.StatusInternalServerError, "Failed to retrieve user: "+err.Error())
 		return
@@ -59,4 +59,19 @@ func HandleGetUserByEmail(w http.ResponseWriter, r *http.Request) {
 
 	// Successfully retrieved the user, respond with the user object
 	utils.RespondWithJSON(w, http.StatusOK, "User retrieved successfully", user)
+}
+
+func HandleGetAllUsers(w http.ResponseWriter, r *http.Request) {
+
+	ctx := context.TODO()
+
+	// Attempt to retrieve all users from the database
+	users, err := database.GetAllUsers(ctx)
+	if err != nil {
+		utils.RespondWithError(w, http.StatusInternalServerError, "Failed to retrieve users: "+err.Error())
+		return
+	}
+
+	// Successfully retrieved the users, respond with the users array
+	utils.RespondWithJSON(w, http.StatusOK, "Users retrieved successfully", users)
 }
