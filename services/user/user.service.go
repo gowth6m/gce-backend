@@ -54,7 +54,7 @@ func HandleCreateUser(c *gin.Context) {
 		ID:          uuid.New().String(),
 		Email:       req.Email,
 		Password:    string(hashed),
-		AccountType: "default",
+		AccountType: models.DefaultUser,
 	}
 
 	if err := database.AddUser(c.Request.Context(), user); err != nil {

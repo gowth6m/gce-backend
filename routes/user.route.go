@@ -14,24 +14,28 @@ func UserRoutes(group *gin.RouterGroup) {
 			user.HandleCreateUser(c)
 		})
 
-		userGroup.GET("/:email", func(c *gin.Context) {
-			user.HandleGetUserByEmail(c)
-		})
-
-		userGroup.GET("/all", func(c *gin.Context) {
-			user.HandleGetAllUsers(c)
-		})
-
 		userGroup.POST("/login", func(c *gin.Context) {
 			user.HandleLogin(c)
 		})
 
-		// Protected routes
+		// Default user routes
 		userGroup.Use(middleware.JWTAuthMiddleware())
 		{
 			userGroup.GET("/current", func(c *gin.Context) {
 				user.HandleGetCurrentUser(c)
 			})
+
+			// Admin user routes
+			userGroup.Use(middleware.IsAdmin())
+			{
+				userGroup.GET("/:email", func(c *gin.Context) {
+					user.HandleGetUserByEmail(c)
+				})
+
+				userGroup.GET("/all", func(c *gin.Context) {
+					user.HandleGetAllUsers(c)
+				})
+			}
 		}
 	}
 }

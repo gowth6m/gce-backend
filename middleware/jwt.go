@@ -9,12 +9,13 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
 	"greatcomcatengineering.com/backend/configs"
+	"greatcomcatengineering.com/backend/models"
 	"greatcomcatengineering.com/backend/utils"
 )
 
 var jwtSecret = []byte(configs.AppConfig().Auth.JWTSecret)
 
-func GenerateJWTToken(id string, email string, accountType string) (string, error) {
+func GenerateJWTToken(id string, email string, accountType models.UserType) (string, error) {
 	token := jwt.New(jwt.SigningMethodHS256)
 
 	// Create a map to store our claims
@@ -84,6 +85,18 @@ func JWTAuthMiddleware() gin.HandlerFunc {
 			return
 		}
 
+		c.Next()
+	}
+}
+
+// Check if the user is an admin
+func IsAdmin() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		accountType := c.GetString("accountType")
+		if accountType != string(models.AdminUser) {
+			utils.RespondWithError(c, http.StatusUnauthorized, "Unauthorized")
+			return
+		}
 		c.Next()
 	}
 }
