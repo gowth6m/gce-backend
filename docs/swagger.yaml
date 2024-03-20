@@ -27,10 +27,11 @@ definitions:
   models.User:
     properties:
       accountType:
+        allOf:
+        - $ref: '#/definitions/models.UserType'
         enum:
         - admin
         - user
-        type: string
       address:
         type: string
       city:
@@ -54,6 +55,14 @@ definitions:
     - email
     - id
     type: object
+  models.UserType:
+    enum:
+    - admin
+    - default
+    type: string
+    x-enum-varnames:
+    - AdminUser
+    - DefaultUser
 host: localhost:8080
 info:
   contact: {}

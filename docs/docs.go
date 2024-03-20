@@ -263,10 +263,14 @@ const docTemplate = `{
             ],
             "properties": {
                 "accountType": {
-                    "type": "string",
                     "enum": [
                         "admin",
                         "user"
+                    ],
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.UserType"
+                        }
                     ]
                 },
                 "address": {
@@ -297,6 +301,17 @@ const docTemplate = `{
                     "type": "string"
                 }
             }
+        },
+        "models.UserType": {
+            "type": "string",
+            "enum": [
+                "admin",
+                "default"
+            ],
+            "x-enum-varnames": [
+                "AdminUser",
+                "DefaultUser"
+            ]
         }
     },
     "securityDefinitions": {
