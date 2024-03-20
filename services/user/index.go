@@ -152,8 +152,8 @@ func HandleLogin(c *gin.Context) {
 
 func HandleGetCurrentUser(c *gin.Context) {
 	// Extract the user ID from the request context
-	val := c.Value("userID")
-	userID, ok := val.(string)
+	val := c.Value("email")
+	email, ok := val.(string)
 	if !ok {
 		utils.RespondWithError(c, http.StatusUnauthorized, "Unauthorized or invalid user ID")
 		return
@@ -162,7 +162,7 @@ func HandleGetCurrentUser(c *gin.Context) {
 	ctx := context.TODO()
 
 	// Attempt to retrieve the user from the database
-	user, err := database.GetUserByEmail(ctx, userID)
+	user, err := database.GetUserByEmail(ctx, email)
 	if err != nil {
 		utils.RespondWithError(c, http.StatusInternalServerError, "Failed to retrieve user: "+err.Error())
 		return

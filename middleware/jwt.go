@@ -50,7 +50,7 @@ func JWTAuthMiddleware() gin.HandlerFunc {
 			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 				return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 			}
-			return []byte(configs.AppConfig().Auth.JWTSecret), nil
+			return []byte(jwtSecret), nil
 		})
 
 		fmt.Println(token)
@@ -76,10 +76,8 @@ func JWTAuthMiddleware() gin.HandlerFunc {
 		}
 
 		if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-			// Set email to Gin context
 			c.Set("email", claims["email"])
-			// Consider setting other useful information in context as well
-			c.Set("userID", claims["id"])
+			c.Set("userId", claims["id"])
 			c.Set("accountType", claims["accountType"])
 		} else {
 			utils.RespondWithError(c, http.StatusUnauthorized, "Invalid token")
