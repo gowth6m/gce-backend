@@ -22,6 +22,12 @@ type Config struct {
 		TokenExpire      int    `envconfig:"TOKEN_EXPIRE" default:"60"`
 		ShortTokenExpire int    `envconfig:"SHORT_TOKEN_EXPIRE" default:"15"`
 	}
+	Cors struct {
+		AllowOrigins     []string `envconfig:"CORS_ALLOW_ORIGINS" default:"greatcomcatengineering.com localhost:8080"`
+		AllowMethods     []string `envconfig:"CORS_ALLOW_METHODS" default:"GET, POST, PUT, DELETE, OPTIONS"`
+		AllowHeaders     []string `envconfig:"CORS_ALLOW_HEADERS" default:"Origin, Content-Length, Content-Type, Authorization"`
+		AllowCredentials bool     `envconfig:"CORS_ALLOW_CREDENTIALS" default:"true"`
+	}
 }
 
 var appConfig = &Config{}

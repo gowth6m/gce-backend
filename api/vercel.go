@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"greatcomcatengineering.com/backend/configs"
 	"greatcomcatengineering.com/backend/database"
@@ -24,8 +25,19 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		log.Fatal("Error loading config: ", err)
 	}
 
+	// Connect to MongoDB
 	database.ConnectToMongoDB()
 	router := gin.Default()
+
+	// CORS
+	router.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"greatcomcatengineering.com"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type", "Authorization"},
+		AllowCredentials: true,
+	}))
+
+	// Routes
 	routes.IntroRoutes(router)
 	routes.SwaggerRoutes(router)
 	versionControlled := router.Group("/" + configs.AppConfig().App.ApiVersion)
