@@ -33,7 +33,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	router.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"greatcomcatengineering.com"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
-		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type", "Authorization"},
+		AllowHeaders:     []string{"*"},
 		AllowCredentials: true,
 	}))
 
