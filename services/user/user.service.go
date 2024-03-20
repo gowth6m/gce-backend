@@ -87,7 +87,11 @@ func HandleGetUserByEmail(c *gin.Context) {
 	user, err := database.GetUserByEmail(c.Request.Context(), email)
 	if err != nil {
 		utils.RespondWithError(c, http.StatusInternalServerError, "Failed to retrieve user")
+	} else if user == nil {
+		utils.RespondWithError(c, http.StatusNotFound, "User not found")
+		return
 	}
+
 	utils.RespondWithJSON(c, http.StatusOK, "User retrieved successfully", user)
 }
 

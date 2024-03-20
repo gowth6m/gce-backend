@@ -25,12 +25,25 @@ func AddUser(ctx context.Context, user models.User) error {
 }
 
 // GetUserByEmail retrieves a user from the database by id
-func GetUserByEmail(ctx context.Context, email string) (models.User, error) {
+func GetUserByEmail(ctx context.Context, email string) (*models.User, error) {
 	collection := Client.Database(DATABASE_NAME).Collection(COLLECTION_USERS)
 	var user models.User
 	err := collection.FindOne(ctx, bson.M{"email": email}).Decode(&user)
-	return user, err
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			return nil, nil
+		}
+		return nil, err
+	}
+	return &user, nil
 }
+
+// func GetUserByEmail(ctx context.Context, email string) (models.User, error) {
+// 	collection := Client.Database(DATABASE_NAME).Collection(COLLECTION_USERS)
+// 	var user models.User
+// 	err := collection.FindOne(ctx, bson.M{"email": email}).Decode(&user)
+// 	return user, err
+// }
 
 // UpdateUser updates a user in the database
 func UpdateUser(ctx context.Context, user models.User) error {
