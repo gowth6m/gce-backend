@@ -10,3 +10,7 @@ This is a backend for the Great Comcat Engineering project. It is a RESTful API 
 2. Run `go mod download` to download the dependencies
 3. Run `go run main.go` to start the server
 4. The server will be running on `localhost:8080`
+
+## Endpoints
+
+View the API documentation [here](https://gce-backend.vercel.app/swagger/index.html)
