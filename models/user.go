@@ -21,6 +21,7 @@ type Session struct {
 	AccountType string `json:"accountType"`
 }
 
+// @MongoDB User
 type User struct {
 	ID          string  `json:"id" bson:"id" validate:"required" auto:"uuid" unique:"true"`
 	Email       string  `json:"email" bson:"email" validate:"required,email" unique:"true"`
@@ -33,4 +34,17 @@ type User struct {
 	City        *string `json:"city" bson:"city" omitempty:"true"`
 	Country     *string `json:"country" bson:"country" omitempty:"true"`
 	PostalCode  *string `json:"postalCode" bson:"postalCode" omitempty:"true"`
+}
+
+type LoginRequest struct {
+	Email    string `json:"email" validate:"required,email"`
+	Password string `json:"password" validate:"required"`
+}
+
+type RegisterRequest struct {
+	ID        string  `json:"id" auto:"uuid"`
+	Email     string  `json:"email" validate:"required,email" unique:"true"`
+	Password  string  `json:"password" validate:"required"`
+	FirstName *string `json:"firstName" omitempty:"true"`
+	LastName  *string `json:"lastName" omitempty:"true"`
 }

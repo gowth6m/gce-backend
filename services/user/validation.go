@@ -5,7 +5,7 @@ import (
 	"regexp"
 )
 
-func ValidateUser(user models.User) (string, bool) {
+func ValidateUserRegister(user models.RegisterRequest) (string, bool) {
 	// Email validation
 	emailRegex := regexp.MustCompile(`^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,4}$`)
 	if !emailRegex.MatchString(user.Email) {
