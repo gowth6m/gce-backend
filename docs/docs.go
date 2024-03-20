@@ -15,6 +15,121 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/product/all": {
+            "get": {
+                "description": "Retrieves all products from the database.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "products"
+                ],
+                "summary": "Get all products",
+                "responses": {
+                    "200": {
+                        "description": "Products retrieved successfully",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Product"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/product/create": {
+            "post": {
+                "description": "Creates a new product in the database.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "products"
+                ],
+                "summary": "Create a product",
+                "parameters": [
+                    {
+                        "description": "Product object",
+                        "name": "product",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Product"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Product created successfully",
+                        "schema": {
+                            "$ref": "#/definitions/models.Product"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request payload"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/product/createMany": {
+            "post": {
+                "description": "Creates multiple products in the database.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "products"
+                ],
+                "summary": "Create multiple products",
+                "parameters": [
+                    {
+                        "description": "Array of product objects",
+                        "name": "products",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Product"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Products created successfully",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Product"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request payload"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
         "/user/all": {
             "get": {
                 "security": [
@@ -218,6 +333,17 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "models.Category": {
+            "type": "string",
+            "enum": [
+                "Fryers",
+                "Other"
+            ],
+            "x-enum-varnames": [
+                "CategoryFryers",
+                "CategoryOther"
+            ]
+        },
         "models.LoginRequest": {
             "type": "object",
             "required": [
@@ -230,6 +356,37 @@ const docTemplate = `{
                 },
                 "password": {
                     "type": "string"
+                }
+            }
+        },
+        "models.Product": {
+            "type": "object",
+            "required": [
+                "countInStock",
+                "name",
+                "price"
+            ],
+            "properties": {
+                "category": {
+                    "$ref": "#/definitions/models.Category"
+                },
+                "countInStock": {
+                    "type": "integer"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
                 }
             }
         },
@@ -258,14 +415,13 @@ const docTemplate = `{
             "type": "object",
             "required": [
                 "accountType",
-                "email",
-                "id"
+                "email"
             ],
             "properties": {
                 "accountType": {
                     "enum": [
                         "admin",
-                        "user"
+                        "default"
                     ],
                     "allOf": [
                         {

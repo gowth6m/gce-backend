@@ -31,6 +31,7 @@ func main() {
 	{
 		routes.DefaultRoutes(versionControlled)
 		routes.UserRoutes(versionControlled)
+		routes.ProductRoutes(versionControlled)
 	}
 	router.Run(configs.AppConfig().App.Host + configs.AppConfig().App.Port)
 	database.DisconnectFromMongoDB()

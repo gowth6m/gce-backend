@@ -15,14 +15,13 @@ import (
 
 var jwtSecret = []byte(configs.AppConfig().Auth.JWTSecret)
 
-func GenerateJWTToken(id string, email string, accountType models.UserType) (string, error) {
+func GenerateJWTToken(email string, accountType models.UserType) (string, error) {
 	token := jwt.New(jwt.SigningMethodHS256)
 
 	// Create a map to store our claims
 	claims := token.Claims.(jwt.MapClaims)
 
 	// Set token claims
-	claims["id"] = id
 	claims["iss"] = "greatcomcatengineering.com"
 	claims["accountType"] = accountType
 	claims["email"] = email
@@ -78,7 +77,6 @@ func JWTAuthMiddleware() gin.HandlerFunc {
 
 		if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
 			c.Set("email", claims["email"])
-			c.Set("userId", claims["id"])
 			c.Set("accountType", claims["accountType"])
 		} else {
 			utils.RespondWithError(c, http.StatusUnauthorized, "Invalid token")

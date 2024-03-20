@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"greatcomcatengineering.com/backend/models"
 	"io"
 	"log"
@@ -41,4 +42,8 @@ func LogRequestBody(c *gin.Context) {
 	}
 
 	c.Next()
+}
+
+func GenerateID() string {
+	return uuid.New().String()
 }

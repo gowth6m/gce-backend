@@ -3,7 +3,6 @@ package user
 import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
 	"greatcomcatengineering.com/backend/database"
 	"greatcomcatengineering.com/backend/middleware"
@@ -51,7 +50,6 @@ func HandleCreateUser(c *gin.Context) {
 	}
 
 	user := models.User{
-		ID:          uuid.New().String(),
 		Email:       req.Email,
 		Password:    string(hashed),
 		AccountType: models.DefaultUser,
@@ -146,7 +144,7 @@ func HandleLogin(c *gin.Context) {
 		return
 	}
 
-	token, err := middleware.GenerateJWTToken(dbUser.ID, dbUser.Email, dbUser.AccountType)
+	token, err := middleware.GenerateJWTToken(dbUser.Email, dbUser.AccountType)
 	if err != nil {
 		// Log this error for internal tracking
 		log.Printf("Error generating JWT token for user: %v, error: %v", dbUser.Email, err)
