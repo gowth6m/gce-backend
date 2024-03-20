@@ -8,7 +8,9 @@ import (
 type Config struct {
 	App struct {
 		Host string `envconfig:"APP_HOST" default:"localhost"`
-		PORT string `envconfig:"APP_PORT" default:":8080"`
+		Port string `envconfig:"APP_PORT" default:":8080"`
+		ApiVersion string `envconfig:"API_VERSION" default:"v0"`
+		AppVersion string `envconfig:"APP_VERSION" default:"v0.0.1"`
 	}
 	Database struct {
 		MongoUri      string `envconfig:"MONGODB_URI" default:"mongodb://localhost:27017"`

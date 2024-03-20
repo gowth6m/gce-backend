@@ -17,10 +17,11 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 
 	database.ConnectToMongoDB()
 	router := gin.Default()
-	v0 := router.Group("/v0")
+	routes.IntroRoutes(router)
+	versionControlled := router.Group("/" + configs.AppConfig().App.ApiVersion)
 	{
-		routes.DefaultRoutes(v0)
-		routes.UserRoutes(v0)
+		routes.DefaultRoutes(versionControlled)
+		routes.UserRoutes(versionControlled)
 	}
 	router.ServeHTTP(w, r)
 }

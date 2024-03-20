@@ -16,11 +16,12 @@ func main() {
 
 	database.ConnectToMongoDB()
 	router := gin.Default()
-	v0 := router.Group("/v0")
+	routes.IntroRoutes(router)
+	versionControlled := router.Group("/" + configs.AppConfig().App.ApiVersion)
 	{
-		routes.DefaultRoutes(v0)
-		routes.UserRoutes(v0)
+		routes.DefaultRoutes(versionControlled)
+		routes.UserRoutes(versionControlled)
 	}
-	router.Run("localhost:8080")
+	router.Run(configs.AppConfig().App.Host + configs.AppConfig().App.Port)
 	database.DisconnectFromMongoDB()
 }
