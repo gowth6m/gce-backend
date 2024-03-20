@@ -14,7 +14,7 @@ func UserRoutes(group *gin.RouterGroup) {
 			user.HandleCreateUser(c)
 		})
 
-		userGroup.GET("/:id", func(c *gin.Context) {
+		userGroup.GET("/:email", func(c *gin.Context) {
 			user.HandleGetUserByEmail(c)
 		})
 

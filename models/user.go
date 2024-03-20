@@ -42,7 +42,6 @@ type LoginRequest struct {
 }
 
 type RegisterRequest struct {
-	ID        string  `json:"id" auto:"uuid"`
 	Email     string  `json:"email" validate:"required,email" unique:"true"`
 	Password  string  `json:"password" validate:"required"`
 	FirstName *string `json:"firstName" omitempty:"true"`

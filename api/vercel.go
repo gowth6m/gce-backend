@@ -9,6 +9,15 @@ import (
 	"net/http"
 )
 
+// @title Great Comcat Engineering API
+// @version 1
+// @description This is the API for the Great Comcat Engineering project.
+// @host localhost:8080
+// @BasePath /v0
+// @schemes http https
+// @securityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
 func Handler(w http.ResponseWriter, r *http.Request) {
 	err := configs.LoadConfig()
 	if err != nil {
@@ -18,6 +27,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	database.ConnectToMongoDB()
 	router := gin.Default()
 	routes.IntroRoutes(router)
+	routes.SwaggerRoutes(router)
 	versionControlled := router.Group("/" + configs.AppConfig().App.ApiVersion)
 	{
 		routes.DefaultRoutes(versionControlled)

@@ -62,3 +62,14 @@ func GetAllUsers(ctx context.Context) ([]models.User, error) {
 
 	return users, nil
 }
+
+// Check if a user exists in the database given email
+func UserExists(ctx context.Context, email string) (bool, error) {
+	collection := Client.Database(DATABASE_NAME).Collection(COLLECTION_USERS)
+	var user models.User
+	err := collection.FindOne(ctx, bson.M{"email": email}).Decode(&user)
+	if err == mongo.ErrNoDocuments {
+		return false, nil
+	}
+	return true, err
+}
