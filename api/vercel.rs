@@ -6,12 +6,14 @@ use handlers::intro::intro;
 
 #[tokio::main]
 async fn main() -> Result<(), Error> {
-    let app = Router::new().route("/", get(intro)).route("/intro", get(intro));
+    // run(handler).await
+
+    let app = Router::new().route("/", get(intro));
 
     let handler = ServiceBuilder::new()
         .map_request(process_request)
         .map_response(process_response)
-        .layer(vermicelli::LambdaLayer::default())
         .service(app);
+
     run_service(handler).await
 }

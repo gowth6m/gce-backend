@@ -10,6 +10,6 @@ pub struct ApiResponse {
 pub async fn intro() -> Json<ApiResponse> {
     Json(ApiResponse {
         code: 200,
-        message: "hello world!".to_string(),
+        message: "hello people of GCE!".to_string(),
     })
 }
