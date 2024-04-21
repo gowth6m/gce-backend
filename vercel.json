@@ -1,0 +1,8 @@
+{
+    "functions": {
+        "api/vercel.rs": {
+            "runtime": "vercel-rust@4.0.7"
+        }
+    },
+    "rewrites": [{ "source": "/(.*)", "destination": "api/vercel" }]
+}
