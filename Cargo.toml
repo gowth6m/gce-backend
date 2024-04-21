@@ -15,5 +15,5 @@ tracing-subscriber = "0.3.18"
 vercel_runtime = "1.1.1"
 
 [[bin]]
-name = "vercel"
-path = "api/vercel.rs"
+name = "main"
+path = "api/main.rs"
